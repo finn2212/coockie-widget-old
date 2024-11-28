@@ -1,0 +1,337 @@
+@use "./abstracts" as *;
+
+$wrapper: ".gt-cookie-widget-wrapper";
+.gt-cookie-dialog {
+  $dialog: &;
+
+  $backdrop: rgba(0, 0, 0, 0.8);
+  $animation-timing: 0.2s ease-in-out;
+  $checkbox-timing: 0.1s ease-out;
+
+  @keyframes gt-cookie-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes gt-cookie-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  position: fixed;
+  z-index: 9999999999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  background: none;
+  border: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  margin: 0;
+  padding: 0 var(--gt-screen-margin);
+  opacity: 0;
+
+  #{$wrapper}:not([data-gt-cookie-dialog-shown]) & {
+    display: none;
+  }
+
+  #{$wrapper}[data-gt-cookie-dialog-shown="true"] & {
+    animation: gt-cookie-fade-in $animation-timing forwards;
+    &::before {
+      animation: gt-cookie-fade-in $animation-timing forwards;
+    }
+  }
+
+  #{$wrapper}[data-gt-cookie-dialog-shown="false"] & {
+    animation: gt-cookie-fade-out $animation-timing forwards;
+    &::before {
+      pointer-events: none;
+      animation: gt-cookie-fade-out $animation-timing forwards;
+    }
+  }
+
+  // Pseudo backdrop
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    height: 100vh;
+    height: 100lvh;
+    background: $backdrop;
+    opacity: 0;
+    z-index: -1;
+  }
+
+  &__modal {
+    position: relative;
+    padding: 32px 24px;
+    margin: var(--gt-screen-margin) 0;
+    width: 100%;
+    max-width: 525px;
+    background: var(--gt-cookie-bg);
+    border-radius: 8px;
+  }
+
+  &__close {
+    @include button-reset;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 20px;
+    line-height: 0;
+
+    @include hover-focus {
+      > svg {
+        opacity: 0.6;
+      }
+    }
+  }
+
+  &__heading {
+    color: var(--gt-cookie-text);
+    margin: 0;
+    font-size: 1.5em;
+    line-height: 1.1;
+    font-weight: 600;
+  }
+
+  &__content {
+    color: var(--gt-cookie-text);
+    font-size: 1em;
+    margin: 20px 0 24px;
+    line-height: 1.5;
+  }
+
+  &__form {
+    display: block;
+  }
+
+  &__checkbox-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px 8px;
+
+    & + & {
+      margin-top: 22px;
+    }
+
+    &--disabled {
+      opacity: 0.5;
+    }
+  }
+
+  &__checkbox {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    cursor: pointer;
+    touch-action: manipulation;
+    text-indent: 0;
+    padding: 0;
+    margin: 0;
+
+    #{$dialog}__checkbox-wrapper--disabled & {
+      cursor: default;
+    }
+  }
+
+  &__checkbox-label {
+    font-weight: 600;
+    font-size: clamp(12px, 0.9em, 14px);
+    user-select: none;
+    line-height: 20px;
+  }
+
+  &__checkbox-total {
+    font-weight: normal;
+  }
+
+  &__checkbox-description {
+    width: 100%;
+    flex: none;
+    line-height: 1.666;
+    opacity: 0.75;
+  }
+
+  &__checkbox-input {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  &__checkbox-display {
+    margin-top: 2px;
+    border: 1px solid;
+    border-radius: 3px;
+    height: 14px;
+    width: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: background $checkbox-timing, opacity $checkbox-timing;
+    opacity: 0.5;
+
+    > svg {
+      color: var(--gt-cookie-bg);
+    }
+
+    #{$dialog}__checkbox-input:checked + & {
+      background: currentColor;
+      opacity: 1;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 40px;
+  }
+
+  &__button {
+    @include button-reset;
+    border-radius: 100vw;
+    color: var(--gt-cookie-button-text);
+    background-color: var(--gt-cookie-button-bg);
+    padding: 10px 20px;
+    min-width: 150px;
+    font-weight: 600;
+    transition: 200ms ease-in-out;
+
+    @include hover-focus {
+      transform: translateY(-5%);
+      opacity: 0.9;
+    }
+
+    &--stroke {
+      position: relative;
+      background: none;
+      color: var(--gt-cookie-text);
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 1px solid var(--gt-cookie-button-bg);
+        opacity: 0.2;
+        border-radius: inherit;
+      }
+    }
+  }
+
+  &__table-toggle {
+    @include button-reset;
+    font-weight: 500;
+    text-decoration: underline;
+
+    @include hover-focus {
+      transform: translateY(-5%);
+      opacity: 0.9;
+      background: none;
+      border: none;
+      color: currentColor;
+    }
+
+    span:last-child {
+      display: none;
+    }
+
+    &[data-gt-cookie-toggle-target-toggled="true"] {
+      span:first-child {
+        display: none;
+      }
+      span:last-child {
+        display: inline;
+      }
+    }
+  }
+
+  & &__table {
+    background: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-collapse: collapse;
+    flex: 1 1 auto;
+    margin-left: -8px;
+    margin-right: -8px;
+    margin-bottom: 8px;
+
+    tbody,
+    thead,
+    tr,
+    td,
+    th {
+      background: none !important;
+      color: var(--gt-cookie-text) !important;
+      font-size: 1em !important;
+      margin: 0;
+      padding: 0;
+      border: none;
+    }
+
+    th {
+      font-weight: 600;
+    }
+    td {
+      font-weight: normal;
+    }
+
+    td,
+    th {
+      vertical-align: top;
+      padding: 8px 8px;
+      position: relative;
+      line-height: 1.2;
+
+      strong {
+        display: block;
+        font-weight: 600;
+        color: inherit;
+        + span {
+          display: block;
+          margin-top: 0.2em;
+        }
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        border-bottom: 1px solid;
+        opacity: 0.1;
+      }
+    }
+
+    > * {
+      width: 100%;
+    }
+
+    a {
+      color: var(--gt-cookie-button-bg);
+    }
+  }
+}

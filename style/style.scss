@@ -1,0 +1,26 @@
+@use "./wrapper";
+@use "./widget";
+@use "./dialog";
+
+/**
+Notes:
+- We have to use px and em values, and not rem values. This is to account for sites (eg. evoke 😡) that have set the default font-size to 62.5% or some such to rescale rem values to be base 10. This sucks, lets hope this is accessible enough.
+
+**/
+
+:root {
+  --gt-cookie-font-size: 14px;
+  --gt-cookie-bg: #ffffff;
+  --gt-cookie-text: #000000;
+  --gt-cookie-link-text: #ff0000;
+  --gt-cookie-button-bg: #ff0000;
+  --gt-cookie-button-text: #ffffff;
+}
+
+.gt-cookie-noscroll {
+  overflow: hidden;
+}
+
+.gt-cookie-hide {
+  display: none;
+}

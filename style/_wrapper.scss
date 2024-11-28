@@ -1,0 +1,28 @@
+@use "./abstracts" as *;
+
+.gt-cookie-widget-wrapper {
+  $wrapper: &;
+  font-size: var(--gt-cookie-font-size);
+  line-height: 1.6666;
+  font-weight: normal;
+  color: var(--gt-cookie-text);
+
+  --gt-screen-margin: 15px;
+  @include breakpoint($bp-sm) {
+    --gt-screen-margin: 30px;
+  }
+
+  a {
+    color: var(--gt-cookie-link-text);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  :focus-visible {
+    opacity: 1;
+    outline: 2px dashed var(--gt-cookie-text) !important;
+    outline-offset: 1px !important;
+  }
+}

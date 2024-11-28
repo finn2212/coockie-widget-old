@@ -1,0 +1,47 @@
+$bp-sm: 480px;
+$bp-md: 768px;
+$bp-lg: 1200px;
+
+@mixin breakpoint($min: 0, $max: 0) {
+    // check to see if first variable is string or number
+    $type: type-of($min);
+
+    // if it's a number, check if min, max or both are required.
+    // write new breakpoint using these boundaries.
+    // default to 'all' if nothing specified.
+    @if $type == number {
+        $query: "all" !default;
+        @if $min != 0 and $max != 0 {
+            $query: "(min-width: #{$min}) and (max-width: #{$max})";
+        } // set both min and max
+        @else if $min != 0 and $max == 0 {
+            $query: "(min-width: #{$min})";
+        } // set just min
+        @else if $min == 0 and $max != 0 {
+            $query: "(max-width: #{$max})";
+        } // set just max
+        @media #{ $query} {
+            @content;
+        }
+    }
+}
+
+@mixin hover-focus {
+    &:hover,
+    &:focus {
+        @content;
+    }
+}
+
+@mixin button-reset {
+    background: none;
+    appearance: none;
+    padding: 0;
+    margin: 0;
+    border: none;
+    color: inherit;
+    line-height: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    cursor: pointer;
+}
